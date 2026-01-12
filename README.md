@@ -1,4 +1,4 @@
-# Quicksilver Template
+# Quicksilver Autopilot Notification
 
 This project was developed from a template for new Quicksilver projects to utilize so that 
 Quicksilver scripts can be installed through Composer.
@@ -35,8 +35,7 @@ In order for this to work, you should have the following in your composer.json f
 }
 ```
 
-The project can be included by using the command, where `{quicksilver-project}` represents the 
-name of the Quicksilver script:
+Then, you can install this package via Composer:
 
 `composer require university-of-denver/quicksilver-autopilot-notification:^1`
 
