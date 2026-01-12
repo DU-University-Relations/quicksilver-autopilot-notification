@@ -1,8 +1,7 @@
 {
-  "name": "pantheon-quicksilver/quicksilver-template",
-  "description": "A template for creating new Quicksilver scripts installed via Composer.",
-  "homepage": "https://github.com/pantheon-quicksilver/quicksilver-template",
-  "authors": [],
+  "name": "university-of-denver/quicksilver-autopilot-notification",
+  "description": "Send a notification to a Drupal site when an Autopilot visual regression test is complete",
+  "homepage": "https://github.com/DU-University-Relations/quicksilver-autopilot-notification",
   "type": "quicksilver-script",
   "require": {
     "composer/installers": "~1.0"
