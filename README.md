@@ -1,19 +1,24 @@
 # Quicksilver Template
 
-This is template for new Quicksilver projects to utilize so that Quicksilver scripts can be installed through Composer.
+This project was developed from a template for new Quicksilver projects to utilize so that 
+Quicksilver scripts can be installed through Composer.
 
-## Requirements
+Original template: https://github.com/pantheon-quicksilver/quicksilver-template
 
-While these scripts can be downloaded individually, they are meant to work with Composer. See the installation in the next section.
+Requirements:
 
-- Quicksilver script projects and the script name itself should be consistent in naming convention.
-- README should include a recommendation for types of hooks and stages that the script should run on.
-  - For example, "This script should run on `clone_database` and the `after` stage.
-  - Provide a snippet that can be pasted into the `pantheon.yml` file.
+- PHP 8.0 or higher
+- Composer
+- Drupal 9+ site running on Pantheon
+- `autopilot_webhook_url` secret set via Terminus Secrets
+- `autopilot_webook_token` secret set via Terminus Secrets
+- [Autopilot Toolbar](https://www.drupal.org/project/pantheon_autopilot_toolbar) module installed
 
-### Installation
 
-This project is designed to be included from a site's `composer.json` file, and placed in its appropriate installation directory by [Composer Installers](https://github.com/composer/installers).
+## Installation
+
+This project is designed to be included from a site's `composer.json` file, and placed in its 
+appropriate installation directory by [Composer Installers](https://github.com/composer/installers).
 
 In order for this to work, you should have the following in your composer.json file:
 
@@ -30,23 +35,44 @@ In order for this to work, you should have the following in your composer.json f
 }
 ```
 
-The project can be included by using the command, where `{quicksilver-project}` represents the name of the Quicksilver script:
+The project can be included by using the command, where `{quicksilver-project}` represents the 
+name of the Quicksilver script:
 
-`composer require pantheon-quicksilver/{quicksilver-project}:^1`
+`composer require university-of-denver/quicksilver-autopilot-notification:^1`
 
-If you are using one of the example PR workflow projects ([Drupal 8](https://www.github.com/pantheon-systems/example-drops-8-composer), [Drupal 9](https://www.github.com/pantheon-systems/drupal-project), [WordPress](https://www.github.com/pantheon-systems/example-wordpress-composer)) as a starting point for your site, these entries should already be present in your `composer.json`.
+### Add to `pantheon.yml`
 
-### Example `pantheon.yml`
-
-Here's an example of what your `pantheon.yml` would look like if this were the only Quicksilver operation you wanted to use.
+Here's what you need to add to your `pantheon.yml` file to run the Quicksilver script after an 
+Autopilot visual regression test:
 
 ```yaml
 api_version: 1
 
 workflows:
-  sync_code:
+  autopilot_vrt:
     after:
       - type: webphp
-        description: Run Quicksilver script
-        script: private/scripts/quicksilver/pantheon-quicksilver/quicksilver-template.php
+        description: Send VRT status to Drupal
+        script: private/scripts/quicksilver/pantheon-quicksilver/autopilot-webhook.php
 ```
+
+### Add secrets via Terminus
+
+Follow the instructions in the 
+[Terminus plugin docs](https://github.com/pantheon-systems/terminus-secrets-manager-plugin) to add 
+the Terminus Secrets Manager plugin to your local machine.
+
+You'll need to add the following secrets to your Pantheon site via Terminus:
+
+```bash
+terminus secret:site:set <site-name> autopilot_webhook_url <your-webhook-url>
+terminus secret:site:set <site-name> autopilot_webhook_token <your-webhook-token>
+```
+
+### Pantheon Autopilot Toolbar Module
+
+Please see the [Pantheon Autopilot Toolbar Module](https://www.drupal.org/project/pantheon_autopilot_toolbar) 
+documentation for more information on how to install and configure the module.
+
+This Quicksilver code will send a webhook that will trigger the Pantheon Autopilot Toolbar module to 
+display a notification in the browser with the VRT status.
